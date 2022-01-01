@@ -52,7 +52,7 @@ const saveData=(nama ,email)=>{
 
     contacts.push(contact);
     fs.writeFileSync(fileData,JSON.stringify(contacts));
-    console.log('data sudah sudah tersimpan');
+    console.log('data berhasil tersimpan');
 }
 
 const listData=()=>{
@@ -67,9 +67,38 @@ const listData=()=>{
     return data;
 }
 
+const detailData=(nama)=>{
+    let datasBuffer = readFile();
+    const datas =JSON.parse(datasBuffer);
+    
+    const data = datas.find((data)=>data.nama.toLowerCase()===nama.toLowerCase());
+
+    if(data){
+        return console.log(data);
+    }else{
+        console.log(chalk.red.inverse.bold(`${nama} tidak ditemukan`));
+        return false;
+    }
+}
+
+const deleteData=(nama)=>{
+    let datasBuffer = readFile();
+    const datas =JSON.parse(datasBuffer);
+    const filterData=datas.filter((data)=>data.nama.toLowerCase()!==nama.toLowerCase());
+
+    if(datas.length==filterData.length){
+        console.log(chalk.red.inverse.bold(`${nama} tidak ditemukan`));
+        return false;  
+    }
+
+    fs.writeFileSync(fileData,JSON.stringify(filterData));
+    console.log(`data ${nama} berhasil dihapus`);
+}
 
 module.exports={
     // tulisPertanyaan,
     saveData,
-    listData
+    listData,
+    detailData,
+    deleteData
 }

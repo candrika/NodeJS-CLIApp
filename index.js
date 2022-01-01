@@ -7,6 +7,7 @@ const { argv } = require('process');
 //init main
 const main= async()=>{
     // init yargs commands
+    //command to create new data
     yargs.command({
         command:'add',
         describe:'Create new data',
@@ -27,14 +28,48 @@ const main= async()=>{
         }
     }).demandCommand();
 
+    //show/read all data
     yargs.command({
         command:'list',
         describe:'Showing all datas record',
         handler(){
            console.log( contacts.listData());
         }
-    }).demandCommand();
+    });
+    
+    // show/read detail data
+    yargs.command({
+        command:'detail',
+        describe:'Show detail for single data',
+        builder:{
+            nama:{
+                describe:'Show detail data using key word nama',
+                demandOption:true,
+                type:'string'
+            }
+        },
+        handler(argv){
+            // console.log(argv)
+            contacts.detailData(argv.nama);
+        }
+    });
 
+    //delete single data
+    yargs.command({
+        command:'delete',
+        describe:'deleta for single data',
+        builder:{
+            nama:{
+                describe:'delete single data using key word nama',
+                demandOption:true,
+                type:'string'
+            }
+        },
+        handler(argv){
+            // console.log(argv)
+            contacts.deleteData(argv.nama);
+        }
+    })
     yargs.parse();      
 }
 
